@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velagala Sri Durga Vara Prasad Reddy | 6D Solar Portfolio</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff0055;
+            --dark-bg: #050505;
+            --glass: rgba(12, 12, 12, 0.85);
+            --border: rgba(0, 243, 255, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        .cursor {
+            position: fixed; width: 10px; height: 10px;
+            background: var(--neon-cyan); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transition: transform 0.1s ease, width 0.2s, height 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-outline {
+            position: fixed; width: 40px; height: 40px;
+            border: 1px solid var(--neon-purple); border-radius: 50%;
+            pointer-events: none; z-index: 9998; transition: transform 0.2s ease-out;
+        }
+
+        /* 6D Solar System Canvas - Fixed behind everything */
+        #solar-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: -1;
+        }
+
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            width: 0%; z-index: 1000; box-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; background: rgba(5, 5, 5, 0.6);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif; font-weight: 900;
+            font-size: 1.2rem; color: var(--neon-cyan);
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            color: #fff; text-decoration: none; margin-left: 2rem;
+            font-weight: 500; text-transform: uppercase; font-size: 0.9rem;
+            transition: color 0.3s; position: relative;
+        }
+        .nav-links a:hover { color: var(--neon-cyan); }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 0; height: 2px; background: var(--neon-cyan); transition: width 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        section {
+            min-height: 100vh; padding: 8rem 5% 4rem; position: relative;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif; font-size: 3rem;
+            margin-bottom: 3rem; text-transform: uppercase;
+            background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* Hero Section */
+        #hero {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; padding-top: 0;
+        }
+
+        .hero-content { position: relative; z-index: 2; }
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 4.5rem;
+            font-weight: 900; line-height: 1.1;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5); margin-bottom: 1rem;
+        }
+        .hero-content h2 {
+            font-size: 1.5rem; font-weight: 300; letter-spacing: 3px;
+            color: var(--neon-cyan); text-transform: uppercase; margin-bottom: 2rem;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem; background: transparent; border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan); font-family: 'Rajdhani', sans-serif; font-weight: 700;
+            font-size: 1.1rem; text-transform: uppercase; cursor: none;
+            position: relative; overflow: hidden; transition: color 0.4s;
+            text-decoration: none; display: inline-block;
+        }
+        .cta-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%; background: var(--neon-cyan);
+            transition: left 0.4s; z-index: -1;
+        }
+        .cta-btn:hover { color: #000; }
+        .cta-btn:hover::before { left: 0; }
+
+        /* Alphabet Nav */
+        #alphabet-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(5,5,5,0.4); backdrop-filter: blur(5px); }
+        .alphabet-container {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 10px; margin-bottom: 3rem; max-width: 1000px;
+        }
+        .alpha-letter {
+            width: 45px; height: 45px; display: flex; align-items: center;
+            justify-content: center; border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Orbitron', sans-serif; font-weight: 700; cursor: none;
+            transition: all 0.3s; color: #555; background: rgba(255,255,255,0.02);
+        }
+        .alpha-letter.active, .alpha-letter:hover {
+            color: #000; background: var(--neon-cyan); border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.1);
+        }
+        .alpha-display {
+            height: 200px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+        }
+        .alpha-display h3 {
+            font-family: 'Orbitron', sans-serif; font-size: 4rem;
+            color: var(--neon-purple); text-shadow: 0 0 20px var(--neon-purple);
+        }
+        .alpha-display p { font-size: 1.5rem; color: #fff; letter-spacing: 2px; }
+
+        /* Skills */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .skill-card {
+            background: var(--glass); border: 1px solid var(--border); padding: 2rem;
+            text-align: center; backdrop-filter: blur(5px); transition: transform 0.3s, box-shadow 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .skill-card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2); border-color: var(--neon-cyan); }
+        .skill-card i { font-size: 3rem; color: var(--neon-cyan); margin-bottom: 1rem; }
+        .skill-card h3 { font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; }
+
+        /* Projects */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; perspective: 1000px; }
+        .project-card {
+            height: 400px; position: relative; transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: none;
+        }
+        .project-card:hover { transform: rotateY(180deg); }
+        .project-face {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            background: var(--glass); border: 1px solid var(--border); padding: 2rem;
+            display: flex; flex-direction: column; justify-content: center; backdrop-filter: blur(10px);
+        }
+        .project-front h3 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--neon-cyan); margin-bottom: 1rem; }
+        .project-back { transform: rotateY(180deg); background: rgba(20, 5, 30, 0.9); border-color: var(--neon-purple); }
+        .project-back p { font-size: 1rem; line-height: 1.6; color: #ddd; }
+        .tech-stack { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tech-stack span { background: rgba(188, 19, 254, 0.2); color: var(--neon-purple); padding: 0.2rem 0.6rem; font-size: 0.8rem; border-radius: 2px; }
+
+        /* Timeline */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; top: 0; width: 2px; height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--neon-cyan), transparent); transform: translateX(-50%);
+        }
+        .timeline-item { position: relative; margin-bottom: 3rem; width: 50%; padding: 1rem 2rem; }
+        .timeline-item:nth-child(odd) { left: 0; text-align: right; }
+        .timeline-item:nth-child(even) { left: 50%; }
+        .timeline-dot {
+            position: absolute; top: 1.5rem; width: 15px; height: 15px;
+            background: var(--neon-cyan); border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-cyan); z-index: 2;
+        }
+        .timeline-item:nth-child(odd) .timeline-dot { right: -7.5px; }
+        .timeline-item:nth-child(even) .timeline-dot { left: -7.5px; }
+        .timeline-content { background: var(--glass); padding: 1.5rem; border: 1px solid var(--border); transition: all 0.3s; }
+        .timeline-content:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 243, 255, 0.1); }
+        .timeline-date { color: var(--neon-purple); font-weight: 700; font-size: 0.9rem; }
+        .timeline-content h3 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; margin: 0.5rem 0; }
+
+        /* Certs */
+        .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .cert-badge {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.1));
+            border: 1px solid var(--border); padding: 1.5rem; text-align: center; transition: transform 0.3s;
+        }
+        .cert-badge:hover { transform: rotate(-2deg) scale(1.05); border-color: var(--neon-pink); }
+        .cert-badge i { font-size: 2rem; color: var(--neon-pink); margin-bottom: 0.5rem; }
+
+        /* Contact */
+        #contact { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #globe-canvas { width: 100%; max-width: 500px; height: 500px; margin: 2rem auto; }
+        .contact-links { display: flex; gap: 2rem; margin-top: 2rem; }
+        .contact-link {
+            font-size: 2rem; color: #fff; transition: all 0.3s; width: 60px; height: 60px;
+            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; text-decoration: none;
+        }
+        .contact-link:hover { color: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); transform: translateY(-5px); }
+
+        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); margin-top: 4rem; font-size: 0.9rem; color: #666; }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-content h2 { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; left: 0 !important; text-align: left !important; padding-left: 50px; }
+            .timeline-item .timeline-dot { left: 12.5px !important; right: auto !important; }
+            nav { padding: 1rem 5%; }
+            .nav-links { display: none; }
+            .cursor, .cursor-outline { display: none; }
+            body { cursor: auto; }
+            .cta-btn { cursor: pointer; }
+            .alpha-letter { width: 35px; height: 35px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor"></div>
+    <div class="cursor-outline"></div>
+    <div id="scroll-progress"></div>
+    
+    <!-- 6D Solar System Canvas -->
+    <canvas id="solar-canvas"></canvas>
+
+    <nav>
+        <div class="logo">VSDVPR</div>
+        <div class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1>VELAGALA<br>SRI DURGA VARA<br>PRASAD REDDY</h1>
+            <h2>Full-Stack Developer & AI Enthusiast</h2>
+            <a href="#alphabet-nav" class="cta-btn">Scroll to Warp</a>
+        </div>
+    </section>
+
+    <section id="alphabet-nav">
+        <h2 class="section-title">Tech Vocabulary</h2>
+        <div class="alphabet-container" id="alpha-container"></div>
+        <div class="alpha-display">
+            <h3 id="alpha-letter-display">A</h3>
+            <p id="alpha-word-display">Hover or Click a Letter</p>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2 class="section-title">Technical Arsenal</h2>
+        <div class="skills-grid">
+            <div class="skill-card"><i class="fab fa-react"></i><h3>React.js</h3><p>Dynamic UI & State Management</p></div>
+            <div class="skill-card"><i class="fab fa-node-js"></i><h3>Node.js & Express</h3><p>RESTful API Development</p></div>
+            <div class="skill-card"><i class="fab fa-python"></i><h3>Python & ML</h3><p>Data Processing & AI Workflows</p></div>
+            <div class="skill-card"><i class="fab fa-aws"></i><h3>AWS Cloud</h3><p>EC2, S3, Deployment & CI/CD</p></div>
+            <div class="skill-card"><i class="fas fa-database"></i><h3>Databases</h3><p>MySQL & MongoDB CRUD Ops</p></div>
+            <div class="skill-card"><i class="fas fa-brain"></i><h3>Prompt Engineering</h3><p>LLM Integration (LLaMA 3.3)</p></div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 class="section-title">Innovative Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-face project-front">
+                    <h3>Employee Management System</h3>
+                    <p>Full-stack cloud-hosted enterprise application.</p>
+                    <div class="tech-stack"><span>Java</span><span>MySQL</span><span>AWS EC2</span><span>S3</span></div>
+                    <p style="margin-top:1rem; font-size:0.8rem; color:var(--neon-cyan);">(Hover to flip)</p>
+                </div>
+                <div class="project-face project-back">
+                    <p>Robust system featuring user authentication, CRUD operations, and REST API design. Deployed on AWS EC2 + S3 for scalable cloud hosting with secure employee data management.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-face project-front">
+                    <h3>Smart Notes Converter</h3>
+                    <p>AI-powered multimodal lecture transcription tool.</p>
+                    <div class="tech-stack"><span>Streamlit</span><span>Whisper</span><span>Tesseract</span><span>LLaMA 3.3</span></div>
+                    <p style="margin-top:1rem; font-size:0.8rem; color:var(--neon-cyan);">(Hover to flip)</p>
+                </div>
+                <div class="project-face project-back">
+                    <p>End-to-end pipeline allowing file upload, multimodal AI processing (Speech-to-Text & OCR), generating structured notes exportable to PDF/TXT.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2 class="section-title">Journey & Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3>MERN Stack Intern - ADHOC NETWORK</h3>
+                    <p>Built React.js frontends and RESTful APIs using Node/Express. Integrated MongoDB and managed Git workflows.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3>ML Intern - ULearn</h3>
+                    <p>Applied Python ML workflows on real datasets. Worked with API-driven pipelines and automation scripts.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2024</div>
+                    <h3>Cloud Simulation - Verizon (Forage)</h3>
+                    <p>Simulated AWS cloud infrastructure tasks including service configuration and deployment workflows.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2024</div>
+                    <h3>DevOps Hackathon - ADHOC Tech</h3>
+                    <p>Built end-to-end CI/CD mini-projects using Git, Docker, and Kubernetes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education">
+        <h2 class="section-title">Education & Certifications</h2>
+        <div style="margin-bottom: 3rem;">
+            <div class="skill-card" style="border-color: var(--neon-purple);">
+                <h3>Aditya Degree College (BCA)</h3>
+                <p>CGPA: 8.5 | No Backlogs | 2023-2026</p>
+            </div>
+        </div>
+        <div class="cert-grid">
+            <div class="cert-badge"><i class="fab fa-html5"></i><h4>HTML5 & CSS</h4><p>W3Cx (edX)</p></div>
+            <div class="cert-badge"><i class="fab fa-python"></i><h4>Python Essentials</h4><p>Cisco Academy</p></div>
+            <div class="cert-badge"><i class="fab fa-aws"></i><h4>AWS Cloud Practitioner</h4><p>Amazon Web Services</p></div>
+            <div class="cert-badge"><i class="fas fa-cloud"></i><h4>Azure DevOps Engineer</h4><p>Infosys Springboard</p></div>
+            <div class="cert-badge"><i class="fas fa-robot"></i><h4>OCI Gen AI Professional</h4><p>Oracle</p></div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Let's Connect</h2>
+        <canvas id="globe-canvas"></canvas>
+        <p>Open to Full-Stack, AI, and Cloud Engineering roles.</p>
+        <div class="contact-links">
+            <a href="mailto:Velagaladurga000@gmail.com" class="contact-link" target="_blank"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/velagala-sri-durga-vara-prasad-reddy-603893309" class="contact-link" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/durgareddy06" class="contact-link" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="tel:+919182914345" class="contact-link"><i class="fas fa-phone"></i></a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Designed & Developed by Velagala Sri Durga Vara Prasad Reddy | 2025</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // --- Custom Cursor ---
+        const cursor = document.querySelector('.cursor');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            setTimeout(() => {
+                cursorOutline.style.left = e.clientX + 'px';
+                cursorOutline.style.top = e.clientY + 'px';
+            }, 100);
+        });
+
+        // --- Scroll Progress ---
+        const scrollProgress = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = progress + '%';
+        });
+
+        // --- Alphabet Navigation Logic ---
+        const techKeywords = {
+            A: 'Artificial Intelligence', B: 'Backend Development', C: 'Cloud Computing (AWS)', 
+            D: 'Docker & DevOps', E: 'Express.js', F: 'Full-Stack Development', 
+            G: 'GitHub Workflows', H: 'HTML5 & CSS3', I: 'API Integration', 
+            J: 'Java & JavaScript', K: 'Kubernetes Basics', L: 'LLaMA 3.3 API', 
+            M: 'Machine Learning', N: 'Node.js', O: 'Oracle Gen AI', 
+            P: 'Python', Q: 'Query Optimization (SQL)', R: 'React.js', 
+            S: 'Streamlit', T: 'Tesseract OCR', U: 'UI/UX Design', 
+            V: 'Verizon Cloud Sim', W: 'Whisper STT', X: 'XML/JSON Parsing', 
+            Y: 'YAML Configs', Z: 'Zero-Downtime Deployment'
+        };
+        const alphaContainer = document.getElementById('alpha-container');
+        const alphaLetterDisplay = document.getElementById('alpha-letter-display');
+        const alphaWordDisplay = document.getElementById('alpha-word-display');
+        Object.keys(techKeywords).forEach(letter => {
+            const div = document.createElement('div');
+            div.classList.add('alpha-letter');
+            div.innerText = letter;
+            div.addEventListener('mouseenter', () => {
+                alphaLetterDisplay.innerText = letter;
+                alphaWordDisplay.innerText = techKeywords[letter];
+                document.querySelectorAll('.alpha-letter').forEach(el => el.classList.remove('active'));
+                div.classList.add('active');
+            });
+            alphaContainer.appendChild(div);
+        });
+
+        // --- 6D Solar System Setup ---
+        const solarCanvas = document.getElementById('solar-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas: solarCanvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 10, 30); // Start high and back to view the whole system
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x333333);
+        scene.add(ambientLight);
+        const sunLight = new THREE.PointLight(0xffffff, 2, 300);
+        scene.add(sunLight);
+
+        // Sun
+        const sunGeo = new THREE.SphereGeometry(3, 32, 32);
+        const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+        const sun = new THREE.Mesh(sunGeo, sunMat);
+        scene.add(sun);
+
+        // Starfield (Warp Speed Effect)
+        const starGeo = new THREE.BufferGeometry();
+        const starCount = 2000;
+        const starPositions = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount * 3; i++) {
+            starPositions[i] = (Math.random() - 0.5) * 400;
+        }
+        starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starMat = new THREE.PointsMaterial({ color: 0x00f3ff, size: 0.5, transparent: true, opacity: 0.8 });
+        const stars = new THREE.Points(starGeo, starMat);
+        scene.add(stars);
+
+        // Planets Setup
+        const planets = [];
+        const planetData = [
+            { radius: 0.8, distance: 6, color: 0x888888, speed: 0.04 }, // Mercury
+            { radius: 1.2, distance: 9, color: 0xff6600, speed: 0.03 }, // Venus
+            { radius: 1.4, distance: 13, color: 0x00f3ff, speed: 0.02 }, // Earth (Cyan)
+            { radius: 1.0, distance: 17, color: 0xff0055, speed: 0.025 }, // Mars (Pink)
+            { radius: 2.5, distance: 22, color: 0xbc13fe, speed: 0.015 }, // Jupiter (Purple)
+            { radius: 2.0, distance: 28, color: 0xffcc00, speed: 0.01 }   // Saturn
+        ];
+
+        planetData.forEach(data => {
+            const geo = new THREE.SphereGeometry(data.radius, 32, 32);
+            const mat = new THREE.MeshStandardMaterial({ color: data.color, emissive: data.color, emissiveIntensity: 0.3, roughness: 0.7 });
+            const planet = new THREE.Mesh(geo, mat);
+            
+            // Create an invisible "orbit pivot" for correct orbital rotation
+            const orbitPivot = new THREE.Object3D();
+            orbitPivot.add(planet);
+            planet.position.x = data.distance;
+            
+            scene.add(orbitPivot);
+            planets.push({ mesh: planet, pivot: orbitPivot, speed: data.speed });
+        });
+
+        // --- Scroll 6D Animation Control ---
+        let scrollY = window.scrollY;
+        let targetCameraZ = 30;
+        let targetCameraY = 10;
+        let targetCameraX = 0;
+
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollY / maxScroll;
+
+            // 6D Camera Transformations based on Scroll
+            targetCameraZ = 30 - (scrollPercent * 50); // Moves camera closer (Z-axis warp)
+            targetCameraY = 10 - (scrollPercent * 5);  // Pitches down slightly
+            targetCameraX = scrollPercent * 10;        // Rolls to the right
+        });
+
+        // --- Contact Globe Setup ---
+        const globeCanvas = document.getElementById('globe-canvas');
+        const globeRenderer = new THREE.WebGLRenderer({ canvas: globeCanvas, alpha: true });
+        globeRenderer.setSize(500, 500);
+        const globeScene = new THREE.Scene();
+        const globeCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        globeCamera.position.z = 5;
+        const globeGeo = new THREE.SphereGeometry(2, 32, 32);
+        const globeMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff, wireframe: true });
+        const globeMesh = new THREE.Mesh(globeGeo, globeMat);
+        globeScene.add(globeMesh);
+
+        // --- Animation Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth Camera Interpolation for 6D effect
+            camera.position.z += (targetCameraZ - camera.position.z) * 0.05;
+            camera.position.y += (targetCameraY - camera.position.y) * 0.05;
+            camera.position.x += (targetCameraX - camera.position.x) * 0.05;
+            camera.lookAt(sun.position); // Always look at the center (Sun)
+
+            // Sun Rotation (Axis 6)
+            sun.rotation.y += 0.002;
+
+            // Planet Orbits and Rotations
+            planets.forEach(p => {
+                p.pivot.rotation.y += p.speed; // Orbit around sun
+                p.mesh.rotation.y += 0.01;     // Self-rotation
+            });
+
+            // Starfield Warp Speed
+            stars.rotation.y += 0.0005;
+            // If scrolling, stars move towards camera to simulate warp speed
+            const starPositionsArray = stars.geometry.attributes.position.array;
+            for (let i = 0; i < starCount; i++) {
+                starPositionsArray[i * 3 + 2] += 0.5; // Move star towards camera
+                // Reset star if it flies past the camera
+                if (starPositionsArray[i * 3 + 2] > 50) {
+                    starPositionsArray[i * 3 + 2] = -200;
+                }
+            }
+            stars.geometry.attributes.position.needsUpdate = true;
+
+            // Rotate Contact Globe
+            globeMesh.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+            globeRenderer.render(globeScene, globeCamera);
+        }
+        animate();
+
+        // --- Handle Resize ---
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        // --- GSAP Scroll Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.utils.toArray('.skill-card').forEach(card => {
+            gsap.from(card, {
+                opacity: 0, y: 50, duration: 0.8,
+                scrollTrigger: { trigger: card, start: 'top 80%' }
+            });
+        });
+
+        gsap.utils.toArray('.timeline-item').forEach(item => {
+            gsap.from(item, {
+                opacity: 0, x: item.classList.contains('odd') ? -50 : 50, duration: 1,
+                scrollTrigger: { trigger: item, start: 'top 85%' }
+            });
+        });
+
+        gsap.utils.toArray('.cert-badge').forEach(badge => {
+            gsap.from(badge, {
+                opacity: 0, scale: 0.5, duration: 0.8,
+                scrollTrigger: { trigger: badge, start: 'top 85%' }
+            });
+        });
+    </script>
+</body>
+</html>
